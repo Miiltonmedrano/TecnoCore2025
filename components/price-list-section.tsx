@@ -5,13 +5,15 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { MessageCircle, Search, TrendingUp, Shield, Clock } from "lucide-react"
+import { MessageCircle, Search, Shield, Clock, RefreshCw, Crown } from "lucide-react"
 import { CategorySection } from "./category-section"
 import { priceData } from "@/data/products"
+import { useCryptoPrice } from "@/hooks/useCryptoPrice"
 import type { Product } from "@/types/product"
 
 export function PriceListSection() {
   const [searchTerm, setSearchTerm] = useState("")
+  const { price, highestPrice, exchange, change24h, lastUpdated, loading, error, refresh } = useCryptoPrice()
 
   const handleBuyProduct = (product: Product) => {
     const phoneNumber = "5493413887729"
@@ -48,18 +50,47 @@ export function PriceListSection() {
           </p>
         </div>
 
-        {/* Dollar Rate Card */}
+        {/* USDT Rate Card */}
         <Card className="mb-12 border-0 shadow-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white">
           <CardContent className="p-8">
             <div className="grid md:grid-cols-3 gap-6 items-center">
               <div className="text-center">
                 <div className="flex items-center justify-center mb-4">
                   <div className="bg-white/20 rounded-full p-3">
-                    <TrendingUp className="w-8 h-8" />
+                    {loading ? (
+                      <RefreshCw className="w-8 h-8 animate-spin" />
+                    ) : (
+                      <Crown className="w-8 h-8 text-yellow-300" />
+                    )}
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">Cotización Dólar</h3>
-                <p className="text-4xl font-bold">${priceData.dollarRate}</p>
+                <h3 className="text-2xl font-bold mb-2">Cotización USDT</h3>
+                {error ? (
+                  <div className="space-y-2">
+                    <p className="text-red-200 text-sm">{error}</p>
+                    <Button
+                      onClick={refresh}
+                      variant="outline"
+                      size="sm"
+                      className="border-white/30 text-white hover:bg-white/10 bg-transparent"
+                    >
+                      <RefreshCw className="w-4 h-4 mr-1" />
+                      Reintentar
+                    </Button>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-4xl font-bold text-yellow-300">${highestPrice.toLocaleString("es-AR")}</p>
+                    <p className="text-sm text-yellow-200 mt-1">Mejor precio en {exchange}</p>
+                    {change24h !== 0 && (
+                      <p className={`text-sm mt-1 ${change24h >= 0 ? "text-green-200" : "text-red-200"}`}>
+                        {change24h >= 0 ? "+" : ""}
+                        {change24h.toFixed(2)}% (24h)
+                      </p>
+                    )}
+                    <p className="text-xs text-blue-200 mt-2">Promedio: ${price.toLocaleString("es-AR")}</p>
+                  </div>
+                )}
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center mb-4">
@@ -69,6 +100,7 @@ export function PriceListSection() {
                 </div>
                 <h3 className="text-xl font-bold mb-2">Stock Garantizado</h3>
                 <p className="text-blue-100">Todo lo publicado disponible</p>
+                <p className="text-xs text-blue-200 mt-2">Productos bajo pedido</p>
               </div>
               <div className="text-center">
                 <div className="flex items-center justify-center mb-4">
@@ -76,14 +108,30 @@ export function PriceListSection() {
                     <Clock className="w-8 h-8" />
                   </div>
                 </div>
-                <h3 className="text-xl font-bold mb-2">Actualización Diaria</h3>
-                <p className="text-blue-100">Precios en USDT</p>
+                <h3 className="text-xl font-bold mb-2">Última Actualización</h3>
+                <p className="text-blue-100 text-sm">{lastUpdated}</p>
+                <Button
+                  onClick={refresh}
+                  variant="ghost"
+                  size="sm"
+                  className="mt-2 text-blue-100 hover:bg-white/10"
+                  disabled={loading}
+                >
+                  <RefreshCw className={`w-4 h-4 mr-1 ${loading ? "animate-spin" : ""}`} />
+                  Actualizar
+                </Button>
               </div>
             </div>
             <div className="mt-6 text-center">
-              <p className="text-blue-100 mb-4">
-                Los precios en pesos se actualizan diariamente según la cotización del dólar.
-              </p>
+              <div className="bg-white/10 rounded-lg p-4 mb-4">
+                <div className="flex items-center justify-center mb-2">
+                  <Crown className="w-5 h-5 text-yellow-300 mr-2" />
+                  <span className="font-semibold">Siempre el Mejor Precio</span>
+                </div>
+                <p className="text-blue-100 text-sm">
+                  Monitoreamos múltiples exchanges para ofrecerte la cotización más alta del mercado
+                </p>
+              </div>
               <Button
                 onClick={() =>
                   handleBuyProduct({
