@@ -81,7 +81,7 @@ export function PriceListSection() {
                 ) : (
                   <div>
                     <p className="text-4xl font-bold text-yellow-300">${highestPrice.toLocaleString("es-AR")}</p>
-                    <p className="text-sm text-yellow-200 mt-1">Mejor precio en {exchange}</p>
+                    <p className="text-sm text-yellow-200 mt-1">Precio en {exchange}</p>
                     {change24h !== 0 && (
                       <p className={`text-sm mt-1 ${change24h >= 0 ? "text-green-200" : "text-red-200"}`}>
                         {change24h >= 0 ? "+" : ""}
@@ -126,10 +126,10 @@ export function PriceListSection() {
               <div className="bg-white/10 rounded-lg p-4 mb-4">
                 <div className="flex items-center justify-center mb-2">
                   <Crown className="w-5 h-5 text-yellow-300 mr-2" />
-                  <span className="font-semibold">Siempre el Mejor Precio</span>
+                  <span className="font-semibold"></span>
                 </div>
                 <p className="text-blue-100 text-sm">
-                  Monitoreamos múltiples exchanges para ofrecerte la cotización más alta del mercado
+                  Monitoreamos múltiples exchanges
                 </p>
               </div>
               <Button
