@@ -70,7 +70,7 @@ export const priceData: PriceData = {
           id: "iphone-15-pro-128gb-black",
           name: "iPhone 15 Pro",
           description: "128GB Black",
-          price: "$840 USDT",
+          price: "$820 USDT",
           available: true,
         },
         {
