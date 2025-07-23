@@ -28,7 +28,7 @@ export const priceData: PriceData = {
           id: "iphone-13-128gb-starlight",
           name: "iPhone 13",
           description: "128GB Starlight",
-          price: "$578 USDT",
+          price: "$530 USDT",
           available: true,
         },
         {
