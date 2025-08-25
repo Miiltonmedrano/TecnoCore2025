@@ -7,8 +7,13 @@ import { MapPin, Clock, MessageCircle, Smartphone, ShoppingCart, Truck, Shield, 
 import Link from "next/link"
 import { PriceListSection } from "@/components/price-list-section"
 import { AboutUsSection } from "@/components/about-us-section"
+import { CartDrawer } from "@/components/cart/cart-drawer"
+import { CartButton } from "@/components/cart/cart-button"
+import { useOrders } from "@/contexts/orders-context"
 
 export default function HomePage() {
+  const { orders } = useOrders()
+
   const scrollToPrices = () => {
     const preciosSection = document.getElementById("precios")
     if (preciosSection) {
@@ -17,7 +22,10 @@ export default function HomePage() {
   }
 
   const handleWhatsAppContact = () => {
-    window.open("https://chat.whatsapp.com/LV1Ne3sBX7YEkRBGVtTf9y", "_blank")
+    const phoneNumber = "5493413887729"
+    const message = "¡Hola! Me interesa conocer más sobre los productos de TecnoCore. ¿Podrían ayudarme? ¡Gracias!"
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    window.open(whatsappUrl, "_blank")
   }
 
   return (
@@ -44,6 +52,22 @@ export default function HomePage() {
               <Link href="#nosotros" className="text-slate-700 hover:text-blue-600 font-medium transition-colors">
                 Sobre Nosotros
               </Link>
+              {/* Temporarily disabled - Mis Pedidos link */}
+              {/* 
+              <Link
+                href="/orders"
+                className="text-slate-700 hover:text-blue-600 font-medium transition-colors flex items-center gap-1"
+              >
+                <Package className="w-4 h-4" />
+                Mis Pedidos
+                {orders.length > 0 && (
+                  <Badge className="ml-1 h-5 w-5 p-0 flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-xs">
+                    {orders.length > 99 ? "99+" : orders.length}
+                  </Badge>
+                )}
+              </Link>
+              */}
+              <CartButton />
             </div>
           </nav>
         </div>
@@ -74,11 +98,11 @@ export default function HomePage() {
             </Button>
             <Button
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800"
               onClick={handleWhatsAppContact}
             >
               <MessageCircle className="w-5 h-5 mr-2" />
-              Grupo de WhatsApp
+              Contactar por WhatsApp
             </Button>
           </div>
 
@@ -217,8 +241,8 @@ export default function HomePage() {
                   <MessageCircle className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-semibold text-white mb-4">WhatsApp</h3>
-                <p className="text-slate-300 mb-6">Ventas: Grupo WhatsApp</p>
-                <Button className="bg-green-600 hover:bg-green-700 w-full">
+                <p className="text-slate-300 mb-6">Ventas: TecnoCore</p>
+                <Button onClick={handleWhatsAppContact} className="bg-green-600 hover:bg-green-700 w-full">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Contactar ahora
                 </Button>
@@ -245,6 +269,9 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      {/* Cart Drawer */}
+      <CartDrawer />
     </div>
   )
 }

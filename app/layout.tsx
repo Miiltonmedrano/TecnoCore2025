@@ -1,6 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
+import { CartProvider } from "@/contexts/cart-context"
+import { OrdersProvider } from "@/contexts/orders-context"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
     title: "TecnoCore - Tecnología al mejor precio",
     description: "Tu tienda especializada en tecnología, con los mejores precios del mercado.",
   },
-    generator: 'v0.dev'
+    generator: 'v0.app'
 }
 
 export default function RootLayout({
@@ -37,7 +39,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <OrdersProvider>
+          <CartProvider>{children}</CartProvider>
+        </OrdersProvider>
+      </body>
     </html>
   )
 }
