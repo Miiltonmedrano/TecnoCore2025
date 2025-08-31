@@ -205,7 +205,7 @@ export const priceData: PriceData = {
           id: "xbox-series-x-blanco",
           name: "Xbox Series X",
           description: "1TB SSD (JP) – Blanco (1882)",
-          price: "$665.00 USDT",
+          price: "$830.00 USDT",
           available: true,
         },
       ],
